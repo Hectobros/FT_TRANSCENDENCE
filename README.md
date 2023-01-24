@@ -1,5 +1,10 @@
 # FT_TRANSCENDENCE
 
+Fait avec Lgimenez, Ladawi, Dboyer et Adenhez
+
+Le but de ce projet est de créer un site web pour jouer au pong.
+
+Je me suis occupé de la partie Front.
 ## LAUNCH
 
 ```
@@ -54,3 +59,5 @@ UPDATE user_channel SET role= 'member' WHERE id = 130;
 DELETE FROM channel WHERE unremovable = 'false';
 
 ```
+
+Sujet: https://cdn.intra.42.fr/pdf/pdf/67622/fr.subject.pdf
