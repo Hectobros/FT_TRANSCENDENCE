@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  postgres:
+      container_name: postgres
+      image: postgres:latest
+      networks:
+        - backend
+      environment:
+        POSTGRES_HOST: "127.0.0.1"
+        POSTGRES_USER: "root"
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_DB: "transcendencedb"
+      ports:
+        - 5432:5432
+      # volumes:
+      #  - postgres-data:/var/lib/postgresql/data
+      
+  # chat:
+  #   container_name: chat
+  #   build:
+  #     context: chat
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - 3001:3000
+  #   depends_on:
+  #     - "postgres"
+  
+volumes:
+  postgres-data:
+    name: chat_postgres-data
+
+networks:
+  backend:
+    name: backend_net
+    driver: bridge

@@ -1,0 +1,5 @@
+CLIENT_ID=<your_client_id>
+CLIENT_SECRET=<your_client_secret>
+REDIRECT_URI=<your_redirect_uri>
+REFRESH_TOKEN_SECRET=<your_secret>
+ACCESS_TOKEN_SECRET=<your_secret>

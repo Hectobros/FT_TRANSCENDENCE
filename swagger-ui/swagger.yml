@@ -1,0 +1,635 @@
+openapi: 3.0.0
+info:
+  title: ft_transcendance API
+  description: |-
+    ft_transcendance API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: /api
+tags:
+  - name: Authentication
+    description: Operations about authentication
+  - name: Users
+    description: Operations about users
+  - name: Friends
+    description: Operations about users friendship
+  - name: Avatars
+    description: Operations about users avatars
+  - name: Matchs
+    description: Operations about matchs
+paths:
+  /auth/callback:
+    post:
+      tags:
+        - Authentication
+      summary: Oauth authentication code flow
+      description: Resolve oauth authentication code flow
+      operationId: OauthAuthentication
+      requestBody:
+        $ref: "#/components/requestBodies/OauthCode"
+      responses:
+        "200":
+          $ref: "#/components/responses/OauthTokenResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /auth/token:
+    post:
+      tags:
+        - Authentication
+      summary: Get new tokens
+      description: Allow you to get a new access and refresh token from your refresh token
+      operationId: RefreshToken
+      requestBody:
+        $ref: "#/components/requestBodies/RefreshTokenInput"
+      responses:
+        "200":
+          $ref: "#/components/responses/OauthTokenResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List users
+      description: Get a list of users
+      operationId: ListUsers
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Onset"
+        - $ref: "#/components/parameters/Length"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - Users
+      summary: Create one user
+      operationId: CreateUser
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      responses:
+        "201":
+          $ref: "#/components/responses/UserResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get details information about the connected user
+      operationId: GetUserMe
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/UserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      tags:
+        - Users
+      summary: Partial update of the connected user
+      operationId: UserPartialUpdate"
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/PartialUpdateUserInput"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - Users
+      summary: Delete the connected user
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      operationId: DeleteUser
+      responses:
+        "204":
+          description: "Successful delete"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/{login}:
+    get:
+      tags:
+        - Users
+      summary: Get details information on one user
+      operationId: GetUserByID
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Login"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me/friends:
+    get:
+      tags:
+        - Friends
+      summary: Retrieve the list of friends of the connected user
+      operationId: ListUsersFriends
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Onset"
+        - $ref: "#/components/parameters/Length"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          $ref: "#/components/responses/UserListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me/friends/{login}:
+    put:
+      tags:
+        - Friends
+      summary: Add a user to the friends list of the connected user
+      operationId: CreateFriendship
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Login"
+      responses:
+        "204":
+          description: "success response"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      tags:
+        - Friends
+      summary: Remove a user to the friends list of the connected user
+      operationId: DeleteFriendship
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Login"
+      responses:
+        "204":
+          description: "success response"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me/avatars:
+    get:
+      tags:
+        - Avatars
+      summary: List the users avatar
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Onset"
+        - $ref: "#/components/parameters/Length"
+      operationId: ListUserAvatars
+      responses:
+        "200":
+          $ref: "#/components/responses/AvatarListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      tags:
+        - Avatars
+      summary: Upload an avatar for the connected user
+      operationId: UploadUserAvatar
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          $ref: "#/components/responses/AvatarResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me/avatars/{avatar_id}:
+    delete:
+      tags:
+        - Avatars
+      summary: Delete an avatar for the connected user
+      operationId: DeleteUserAvatar
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/AvatarID"
+      responses:
+        "204":
+          description: "successfull delete"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /users/me/match_history:
+    get:
+      tags:
+        - Matchs
+      summary: Get the match history for the connected user
+      security:
+        - 42oauth: [public]
+        - bearerAuth: []
+      operationId: GetMatchHistory
+      parameters:
+        - $ref: "#/components/parameters/Onset"
+        - $ref: "#/components/parameters/Length"
+      responses:
+        "200":
+          $ref: "#/components/responses/MatchHistoryResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  responses:
+    OauthTokenResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OauthToken"
+    Unauthorized:
+      description: No token provided or invalid token provided
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorOutput"
+    NotFound:
+      description: Ressource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorOutput"
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorOutput"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorOutput"
+    UserResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserOutput"
+    UserListResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/UserOutput"
+    AvatarListResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/AvatarOutput"
+    AvatarResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AvatarOutput"
+    AvatarBinaryResponse:
+      description: "success response"
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+    MatchHistoryResponse:
+      description: success response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/MatchOutput"
+  parameters:
+    Onset:
+      description: "beginning index of the list (default: 0)"
+      in: query
+      name: onset
+      required: false
+      schema:
+        type: integer
+        format: int64
+    Length:
+      description: "size of the list (default: all)"
+      in: query
+      name: length
+      required: false
+      schema:
+        type: integer
+        format: int64
+    Search:
+      description: "pattern to search for"
+      in: query
+      name: search
+      required: false
+      schema:
+        type: string
+    Login:
+      name: login
+      in: path
+      required: true
+      schema:
+        type: string
+    AvatarID:
+      name: avatar_id
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    OauthToken:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+        - refresh_token
+        - scope
+        - created_at
+      properties:
+        access_token:
+          type: string
+          example: 07af7983c67ebf4c30f4484e8231a09eb847f270690027f3c8d43f044e0cd21d
+        token_type:
+          type: string
+          example: "bearer"
+        expires_in:
+          type: integer
+          format: int64
+          example: 7200
+        refresh_token:
+          type: string
+          example: d7d198196efcfe61cd131cb0fd6192365ae7248c2acc68c6323f83ca8917546a
+        scope:
+          type: string
+          example: public
+        created_at:
+          type: integer
+          format: int64
+          example: 16665511
+    ErrorOutput:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: some message explaining the error
+    PlayerOutput:
+      type: object
+      required:
+        - user
+        - score
+      properties:
+        user:
+          $ref: "#/components/schemas/UserOutput"
+        score:
+          type: integer
+          format: int64
+          example: 6
+    MatchOutput:
+      type: object
+      required:
+        - id
+        - created_at
+        - finished_at
+        - loser
+        - winner
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 111
+        created_at:
+          type: string
+          format: datetime
+        finished_at:
+          type: string
+          format: datetime
+        winner:
+          $ref: "#/components/schemas/PlayerOutput"
+        loser:
+          $ref: "#/components/schemas/PlayerOutput"
+    UserStatsOutput:
+      type: object
+      required:
+        - id
+        - level
+        - victories
+        - defeats
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 11
+        level:
+          type: integer
+          format: int64
+          example: 21
+        victories:
+          type: integer
+          format: int64
+          example: 20
+        defeats:
+          type: integer
+          format: int64
+          example: 0
+    AvatarOutput:
+      type: object
+      required:
+        - id
+        - path
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 11
+        path:
+          type: string
+          example: "/pictures/me.png"
+    UserOutput:
+      type: object
+      required:
+        - login
+        - username
+        - status
+        - actual_avatar
+        - stats
+        - settings
+      properties:
+        login:
+          type: string
+          example: dboyer
+        actual_avatar:
+          $ref: "#/components/schemas/AvatarOutput"
+        username:
+          type: string
+          example: dboyer
+        status:
+          type: string
+          enum:
+            - online
+            - offline
+            - in_game
+            - in_queue
+            - afk
+        stats:
+          $ref: "#/components/schemas/UserStatsOutput"
+        settings:
+          $ref: "#/components/schemas/UserSettings"
+    UserSettings:
+      type: object
+      required:
+        - two_fa
+        - paddle_id
+        - map_id
+      properties:
+        two_fa:
+          type: boolean
+          example: false
+        paddle_id:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+        map_id:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+  requestBodies:
+    OauthCode:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+            properties:
+              code:
+                description: Authorisation code provided by 42 oauth flow
+                type: string
+                example: 60f915735add207fb3a7c1d251d0a16fb2ec2d9d0238945cd74a86edbcc03717
+    RefreshTokenInput:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token
+            properties:
+              token:
+                description: refresh token
+                type: string
+                example: d7d198196efcfe61cd131cb0fd6192365ae7248c2acc68c6323f83ca8917546a
+    PartialUpdateUserInput:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                example: dboyer
+              settings:
+                $ref: "#/components/schemas/UserSettings"
+  securitySchemes:
+    42oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://api.intra.42.fr/oauth/authorize"
+          tokenUrl: /api/auth/callback
+          refreshUrl: /api/token
+          scopes:
+            public: Grant access to 42 public data
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

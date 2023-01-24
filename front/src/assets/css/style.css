@@ -1,0 +1,139 @@
+#messages{
+    height:300px;
+    overflow-y: scroll;
+}
+
+#background_game {
+    justify-content: center;
+
+    margin: 0px;
+    background: rgb(255,255,255);
+    background: linear-gradient(135deg, rgba(255,255,255,0.6012780112044818) 0%, rgba(245,251,248,1) 27%, rgba(197,233,212,1) 44%, rgba(31,169,86,1) 90%, rgba(16,163,74,1) 100%);
+}
+
+#displayed_username{
+    color: red;
+}
+
+#app {
+    margin-top: 2rem;
+}
+
+#gameScreen {
+    display: none;
+ }
+.player_1_name {
+    background-color: white;
+    color: #16a34a;
+    height: 30%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-style: solid;
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-color: black;
+    border-width: 1px;
+    border-right-width: 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.player_2_name {
+    background-color: white;
+    color: #16a34a;
+    height: 30%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-style: solid;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: black;
+    border-width: 1px;
+    border-left-width: 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.player_score {
+    height: 30%;
+    width: 30%;
+    background-color: #16a34a;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-family: 'Press Start 2P', cursive;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+.textInBox {
+    font-weight: bold;
+    font-size:100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ui {
+    position: absolute;
+    /* top: 50%; */
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding-bottom: 1%;
+    justify-content: space-between;
+}
+
+.board {
+    width: 60%;
+    min-width: 150;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+html * {
+    font-size: 16px;
+    line-height: 1.625;
+    font-family: Nunito, sans-serif;
+  }
+
+.queueScreen {
+    font-family: Hack, monospace;
+    display: none;
+    align-content: center;
+    opacity: 1;
+    text-align: center;
+    background: #e8e8e8;
+    color: #16a34a;
+    font-size: 2em;
+    padding: 1.5rem;
+    transition: all 0.5s;
+    border-radius: 10px;
+    width: 30%;
+    position: relative;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-color: rgb(232, 232, 232);
+    transition: 500ms;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-width: 1px;
+    border-color: black;
+}
+
+
+#returnGameBtn {
+  position: fixed;
+  top: 80%;
+  left: 50%;
+  transform: translate(-40%, 0%);
+  width: 55%;
+}

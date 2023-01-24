@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>Transcendance Testing Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div id="app" class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 col-sm-12">
+                    <h1 class="text-center">{{ title }}</h1>
+                    <br>
+                    <div id="status"></div>
+                    <div id="chat">
+
+
+                        <span>SELECTED CHANNEL: {{ selected }}</span>
+                        <br>
+                        <select v-model="selected" @change="onChange($event)">
+                            <option v-for="channel in channels" v-bind:value="channel.id">
+                              {{ channel.name }}
+                            </option>
+                          </select>
+
+                            
+                          <input v-model="chan_name" type="text" id="chan_name" class="form-control" placeholder="Enter new chan_name...">
+                          <button id="create_chan" class="btn" @click.prevent="createChan">Create Chan</button>
+
+                         
+                        
+                         
+                         
+
+                          <!-- <hr>
+                          <div class="card">
+                              <div id="messages" class="card-block">
+                                  <ul>
+                                      <li v-for="chan of channels"><span id="displayed_channel">{{ chan.name }}</span></li>
+                                  </ul>
+                              </div>
+                          </div> -->
+
+
+                        <hr>
+                        <div class="card">
+                            <div id="messages" class="card-block">
+                                <ul v-chat-scroll="{always: false, smooth: true, scrollonremoved:true}">
+                                    <li v-for="message of messages"><span id="displayed_username">{{ message.sender }}</span>: {{ message.text }}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <br>
+                        <input v-model="sender" type="text" id="username" class="form-control" placeholder="Enter name...">
+                        <br>
+                        <textarea v-model="text" id="textarea" class="form-control"  @keyup.enter="sendMessage" placeholder="Enter message..."></textarea>
+                        <br>
+                        <button id="send" class="btn" @click.prevent="sendMessage">Send</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
